@@ -8,7 +8,7 @@
 body {
   display: grid;
   grid-template-columns: 1fr 4fr;
-  background-color: rgb(22, 19, 49);
+  background-color: #161331;
   height: 100vh;
 }
 
@@ -16,8 +16,9 @@ aside {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: rgb(236, 236, 236);
+  background-color: #ececec;
   padding: 1em;
+  gap: 1rem;
 }
 
 main {
@@ -31,7 +32,7 @@ header {
 }
 
 header h1 {
-  color: rgb(255, 255, 255);
+  color: #ffffff;
 }
 
 aside h3,
@@ -39,48 +40,67 @@ header h1 {
   font-size: clamp(1.3rem, 1.6rem, 1.9rem);
 }
 
-aside > * {
-  margin-bottom: 1.5rem;
-}
-
-aside button {
+#new-project-button {
   font-weight: 600;
   font-size: clamp(1rem, 1.3rem, 1.5rem);
-  padding: 0.5rem;
+  padding: 0.3rem;
   border-radius: 8px;
   border-width: 0;
-  background-color: rgb(33, 185, 255);
+  background-color: #21b9ff;
   box-shadow: 5px 5px 5px 0px rgb(0, 0, 0);
 }
 
-aside button:hover {
-  box-shadow: 5px 5px 10px 0px rgba(0, 68, 255, 1);
+#new-project-button:hover {
+  box-shadow: 5px 5px 10px 0px #0044ff;
 }
 
-#projects-list {
+#projects-names {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+#projects-names > li {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  font-weight: 600;
+  font-size: clamp(1rem, 1.3rem, 1.5rem);
+  list-style-type: none;
+  cursor: pointer;
   align-items: center;
 }
 
-#projects-list > li {
-  font-weight: 600;
-  font-size: clamp(1rem, 1.3rem, 1.5rem);
-  margin-bottom: 1rem;
-  list-style-type: none;
-  cursor: pointer;
+#projects-names > li > p {
+  flex: 1;
+  text-align: center;
 }
 
-.project-wrapper {
-  display: none;
-  background-color: rgb(255, 255, 255);
+.delete-button {
+  font-weight: 600;
+  font-size: clamp(0.5rem, 0.7rem, 0.8rem);
+  padding: 0.2rem 0.4rem;
+  border-radius: 8px;
+  border-width: 0;
+  background-color: #ca3e3e;
+  box-shadow: 2px 2px 3px 0px #000000;
+}
+
+.delete-button:hover {
+  box-shadow: 3px 3px 4px 0px #ff3838;
+}
+
+#project-wrapper {
+  display: grid;
+  align-items: center;
+  background-color: #ffffff;
   border-radius: 16px;
   padding: 1.5rem;
   min-width: 65vw;
   margin: 1rem;
 }
 
-.project-tasks-wrapper {
+#project-tasks-wrapper {
   flex: 1;
   margin-top: 1rem;
   display: grid;
@@ -89,7 +109,7 @@ aside button:hover {
   place-items: center;
 }
 
-.project-title {
+#project-title {
   font-weight: 600;
   font-size: clamp(1rem, 1.5rem, 2rem);
   justify-self: center;
@@ -101,13 +121,8 @@ aside button:hover {
   align-items: center;
   width: clamp(150px, 170px, 200px);
   height: 20vh;
-  border: 1px solid rgb(0, 0, 0);
+  border: 1px solid #000000;
   border-radius: 16px;
   padding: 1rem;
-  box-shadow: 2px 2px 5px 0px rgb(0, 0, 0);
-}
-
-.active {
-  display: grid;
-  align-items: center;
+  box-shadow: 2px 2px 5px 0px #000000;
 }
