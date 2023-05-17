@@ -1,21 +1,17 @@
 class Project {
   constructor(name) {
-    this._name = name
-    this._taskList = new Array()
+    this.name = name
+    this.taskList = []
   }
 
   addTask(Task) {
-    this._taskList.push(Task)
+    this.taskList.push(Task)
   }
 
   removeTask(Task) {
-    if (this._taskList.indexOf(Task) < 0) return
+    if (this.taskList.indexOf(Task) < 0) return
 
-    this._taskList.splice(this._taskList.indexOf(Task), 1)
-  }
-
-  getName() {
-    return this._name
+    this.taskList.splice(this.taskList.indexOf(Task), 1)
   }
 }
 
