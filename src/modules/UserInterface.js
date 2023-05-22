@@ -3,9 +3,12 @@ import Task from "./Task"
 import Storage from "./Storage"
 
 class UserInterface {
-  static loadStorageProjects() {
-    const todoList = Storage.getTodoList()
+  static load() {
+    UserInterface.loadStorageProjects(Storage.getTodoList())
+    UserInterface.loadNewProjectButton()
+  }
 
+  static loadStorageProjects(todoList) {
     todoList.forEach((project) => {
       const projectObject = new Project(project.name)
       project.taskList.forEach((task) => {
@@ -18,6 +21,7 @@ class UserInterface {
         projectObject.addTask(taskObject)
       })
       UserInterface.loadProject(projectObject)
+      UserInterface.loadProjectItem(projectObject)
     })
   }
 
@@ -31,12 +35,10 @@ class UserInterface {
           </div>
           <div id="project-tasks-wrapper"></div>        
         </div>`
-    const projectTaskList = project.taskList
 
-    if (projectTaskList.length > 0) {
-      UserInterface.loadTasks(projectTaskList)
+    if (project.taskList.length > 0) {
+      UserInterface.loadTasks(project.taskList)
     }
-    UserInterface.loadProjectItem(project)
   }
 
   static loadProjectItem(project) {
@@ -48,11 +50,24 @@ class UserInterface {
 
     const projectName = projectItem.querySelector("p")
     projectName.addEventListener("click", () => {
-      console.log("clicked")
+      UserInterface.loadProject(project)
     })
-
     const projectsList = document.getElementById("projects-names")
     projectsList.appendChild(projectItem)
+
+    const deleteButton = projectItem.querySelector("button")
+    deleteButton.addEventListener("click", () => {
+      if (Storage.deleteProject(project)) {
+        projectItem.parentElement.removeChild(projectItem)
+
+        const projectWrapper = document.getElementById("projects")
+        const projectTitle = document.getElementById("project-title")
+
+        if (projectTitle?.textContent === project.name) {
+          projectWrapper.innerHTML = ""
+        }
+      }
+    })
   }
 
   static loadTasks(taskList) {
@@ -82,10 +97,26 @@ class UserInterface {
     console.log(projectIndex)
   }
 
-  static loadEventListeners() {
-    const deleteButtons = document.querySelectorAll(".delete-button")
-    deleteButtons.forEach((button) => {
-      button.addEventListener("click", () => {})
+  static loadNewProjectButton() {
+    const newProjectButton = document.getElementById("new-project-button")
+    newProjectButton.addEventListener("click", () => {
+      let newProjectName = prompt("What's the name of the new project?")
+      newProjectName = newProjectName
+        ?.replaceAll("<", "")
+        .replaceAll(">", "")
+        .trim()
+
+      if (newProjectName?.length > 0) {
+        const project = new Project(newProjectName)
+        if (Storage.addNewProject(project)) {
+          UserInterface.loadProject(project)
+          UserInterface.loadProjectItem(project)
+        } else {
+          window.alert(
+            `There's already a project created with the name: ${newProjectName}`
+          )
+        }
+      }
     })
   }
 }
