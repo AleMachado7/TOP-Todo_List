@@ -1,21 +1,45 @@
 class Storage {
-  static projectsArray = []
+  static todoList = []
 
   static addNewProject(project) {
-    this.projectsArray.push(project)
-    Storage.saveTodoList()
+    if (Storage.getProject(project) === undefined) {
+      this.todoList.push(project)
+      Storage.saveTodoList()
+      return true
+    }
+    return false
+  }
+
+  static getProject(project) {
+    return this.todoList.find(
+      (storedProject) => storedProject.name === project.name
+    )
   }
 
   static saveTodoList() {
-    localStorage.setItem("todoList", JSON.stringify(this.projectsArray))
+    localStorage.setItem("todoList", JSON.stringify(this.todoList))
   }
 
   static getTodoList() {
     const storedProjects = JSON.parse(localStorage.getItem("todoList"))
     if (storedProjects !== null) {
-      this.projectsArray = [...storedProjects]
+      this.todoList = [...storedProjects]
     }
-    return this.projectsArray
+    return this.todoList
+  }
+
+  static deleteProject(project) {
+    const projectIndex = this.todoList.findIndex(
+      (storedProject) => storedProject.name === project.name
+    )
+
+    if (projectIndex >= 0) {
+      this.todoList.splice(projectIndex, 1)
+      Storage.saveTodoList()
+      return true
+    }
+
+    return false
   }
 
   static clear() {
