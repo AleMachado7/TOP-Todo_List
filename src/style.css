@@ -67,8 +67,11 @@ header h1 {
   font-weight: 600;
   font-size: clamp(1rem, 1.3rem, 1.5rem);
   list-style-type: none;
-  cursor: pointer;
   align-items: center;
+}
+
+#projects-names > li > * {
+  cursor: pointer;
 }
 
 #projects-names > li > p {
