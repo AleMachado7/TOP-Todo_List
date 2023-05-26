@@ -9,20 +9,27 @@ class UserInterface {
   }
 
   static loadStorageProjects(todoList) {
-    todoList.forEach((project) => {
+    for (let i = 0; i < todoList.length; i++) {
+      const project = todoList[i]
       const projectObject = new Project(project.name)
-      project.taskList.forEach((task) => {
+
+      for (let j = 0; j < project.taskList.length; j++) {
+        const task = project.taskList[j]
         const taskObject = new Task(
           task.title,
           task.description,
           task.dueDate,
+          task.priority,
           task.completedStatus
         )
         projectObject.addTask(taskObject)
-      })
+      }
+
+      todoList[i] = projectObject
       UserInterface.loadProject(projectObject)
       UserInterface.loadProjectItem(projectObject)
-    })
+      Storage.saveTodoList()
+    }
   }
 
   static loadProject(project) {
@@ -31,7 +38,7 @@ class UserInterface {
         <div id="project-wrapper">
           <h2 id="project-title">${project.name}</h2>
           <div class="project-buttons">
-            <button>New Task</button>
+            <button id="new-task">New Task</button>
           </div>
           <div id="project-tasks-wrapper"></div>        
         </div>`
@@ -39,6 +46,68 @@ class UserInterface {
     if (project.taskList.length > 0) {
       UserInterface.loadTasks(project.taskList)
     }
+
+    const newTaskPopup = document.createElement("div")
+    newTaskPopup.id = "form-container"
+    const newTaskButton = document.getElementById("new-task")
+    newTaskButton.addEventListener("click", () => {
+      if (document.querySelector("#form-container") === null) {
+        newTaskPopup.innerHTML = `
+        <h3 id="popup-title">NEW TASK</h3>
+        <form action="#" method="POST">
+          <label for="title">Title:</label>
+          <input type="text" id="title" name="title">
+          
+          <label for="description">Description:</label>
+          <input type="text" id="description" name="description">
+          
+          <label for="dueDate">Due Date:</label>
+          <input type="date" id="dueDate" name="dueDate">
+          
+          <label for="priority">Priority:</label>
+          <select id="priority" name="priority">
+            <option value="low">Low</option>
+            <option value="Normal">Normal</option>
+            <option value="High">High</option>
+          </select>
+          
+          <div>
+            <label for="completed">Completed:</label>
+            <input type="checkbox" id="completed" name="completed">
+          </div>
+
+          <input id="create-task" type="reset" value="Add Task">
+        </form>
+      `
+
+        document.body.appendChild(newTaskPopup)
+
+        const addTaskButton = document.querySelector("#create-task")
+        addTaskButton.addEventListener("click", () => {
+          const taskTitle = document.querySelector("#title").value
+          const taskDescription = document.querySelector("#description").value
+          const taskDueDate = document.querySelector("#dueDate").value
+          const taskPriority = document.querySelector("#priority").value
+          const taskStatus = document.querySelector("#completed").checked
+
+          if (taskTitle === "" || taskDescription === "" || taskDueDate === "")
+            return
+
+          const newTask = new Task(
+            taskTitle,
+            taskDescription,
+            taskDueDate,
+            taskPriority,
+            taskStatus
+          )
+
+          project.addTask(newTask)
+          UserInterface.loadTasks(project.taskList)
+          Storage.saveTodoList()
+          document.body.removeChild(newTaskPopup)
+        })
+      }
+    })
   }
 
   static loadProjectItem(project) {
@@ -72,29 +141,30 @@ class UserInterface {
 
   static loadTasks(taskList) {
     const tasksWrapper = document.getElementById("project-tasks-wrapper")
+    while (tasksWrapper.firstChild) {
+      tasksWrapper.removeChild(tasksWrapper.firstChild)
+    }
+
     taskList.forEach((taskItem) => {
       const task = document.createElement("div")
       task.classList.add("task")
       task.innerHTML = `
-        <p>${taskItem.title}</p>
-        <p>${taskItem.description}</p>
-        <p>${taskItem.dueDate}</p>
-        <p>${taskItem.priority}</p>
-        <p>${taskItem.completedStatus}</p>
+          <p class="task-title">${taskItem.title}</p>
+          <p class="task-general-text">Description: ${taskItem.description}</p>
+          <div>
+            <p class="task-general-text">Due Date: ${taskItem.dueDate}</p>
+          </div>          
+          <p class="task-general-text">Priority: ${taskItem.priority}</p>
+          <p class="task-general-text">Completed: <input type=checkbox><p>
       `
+      const taskCompleted = task.querySelector("input")
+      taskCompleted.checked = taskItem.completedStatus
+      taskCompleted.addEventListener("click", () => {
+        taskItem.changeCompletedStatus()
+        Storage.saveTodoList()
+      })
       tasksWrapper.appendChild(task)
     })
-  }
-
-  static deleteProject(projectName, projectsArray) {
-    let projectIndex = -1
-
-    projectsArray.forEach((project) => {
-      if (project.name === projectName) {
-        projectIndex = projectsArray.indexOf(project)
-      }
-    })
-    console.log(projectIndex)
   }
 
   static loadNewProjectButton() {
