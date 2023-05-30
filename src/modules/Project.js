@@ -4,14 +4,27 @@ class Project {
     this.taskList = []
   }
 
-  addTask(Task) {
-    this.taskList.push(Task)
+  addTask(newTask) {
+    if (this.getTask(newTask) === undefined) {
+      this.taskList.push(newTask)
+    }
   }
 
-  removeTask(Task) {
-    if (this.taskList.indexOf(Task) < 0) return
+  getTask(task) {
+    return this.taskList.find((storedTask) => storedTask.title === task.title)
+  }
 
-    this.taskList.splice(this.taskList.indexOf(Task), 1)
+  deleteTask(task) {
+    const taskIndex = this.taskList.findIndex(
+      (storedTask) => storedTask.title === task.title
+    )
+
+    if (taskIndex >= 0) {
+      this.taskList.splice(taskIndex, 1)
+      return true
+    }
+
+    return false
   }
 }
 

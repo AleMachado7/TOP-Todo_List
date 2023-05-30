@@ -68,6 +68,7 @@ header h1 {
   font-size: clamp(1rem, 1.3rem, 1.5rem);
   list-style-type: none;
   align-items: center;
+  max-width: 200px;
 }
 
 #projects-names > li > * {
@@ -76,7 +77,9 @@ header h1 {
 
 #projects-names > li > p {
   flex: 1;
+  max-width: 100%;
   text-align: center;
+  word-wrap: break-word;
 }
 
 .delete-button {
@@ -85,7 +88,7 @@ header h1 {
   padding: 0.2rem 0.4rem;
   border-radius: 8px;
   border-width: 0;
-  background-color: #ca3e3e;
+  background-color: #d14b4b;
   box-shadow: 2px 2px 3px 0px #000000;
 }
 
@@ -107,9 +110,8 @@ header h1 {
   flex: 1;
   margin-top: 1rem;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 1rem;
-  place-items: center;
 }
 
 #project-title {
@@ -118,14 +120,90 @@ header h1 {
   justify-self: center;
 }
 
+#new-task {
+  font-weight: 700;
+  color: #ffffff;
+  background-color: #2e9e47;
+  padding: 8px 8px;
+  border: 0;
+  border-radius: 8px;
+}
+
+#new-task:hover {
+  box-shadow: 0px 0px 6px 0px #208f1c;
+}
+
 .task {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: clamp(150px, 170px, 200px);
-  height: 20vh;
+  justify-content: space-between;
   border: 1px solid #000000;
+  max-width: 300px;
   border-radius: 16px;
   padding: 1rem;
   box-shadow: 2px 2px 5px 0px #000000;
+}
+
+.task-attributes {
+  max-width: 100%;
+  word-wrap: break-word;
+}
+
+.task-title {
+  font-weight: 700;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  font-size: clamp(1rem, 1.2rem, 1.5rem);
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.task-attribute {
+  font-weight: 600;
+}
+
+.task-text {
+  font-size: clamp(0.7rem, 0.8rem, 1rem);
+  margin-bottom: 0.2rem;
+}
+
+.delete-task {
+  background-color: #d14b4b;
+  border: 0;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.delete-task:hover {
+  box-shadow: 0px 0px 6px 0px #ff3838;
+}
+
+#popup-title {
+  text-align: center;
+  color: #ffffff;
+  margin-bottom: 0.3rem;
+}
+
+#form-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 1.2rem;
+  background-color: #2f3480;
+  border-radius: 8px;
+}
+
+#form-container > form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  color: #ffffff;
+}
+
+#form-container > form > :nth-child(2n) {
+  margin-bottom: 0.7rem;
 }

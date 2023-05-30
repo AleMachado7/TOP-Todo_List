@@ -7,14 +7,6 @@ class Task {
     this.completedStatus = completedStatus
   }
 
-  changeDueDate(newDate) {
-    this.dueDate = newDate
-  }
-
-  changePriority(newPriority) {
-    this.priority = newPriority
-  }
-
   changeCompletedStatus() {
     this.completedStatus = !this.completedStatus
   }
