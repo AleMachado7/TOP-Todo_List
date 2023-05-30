@@ -1,6 +1,7 @@
 import Project from "./Project"
 import Task from "./Task"
 import Storage from "./Storage"
+import formatDate from "../global functions/dateFormat"
 
 class UserInterface {
   static load() {
@@ -132,11 +133,17 @@ class UserInterface {
       task.innerHTML = `
           <div class="task-attributes">
             <p class="task-title">${taskItem.title}</p>
-            <p class="task-text"><span class="task-attribute">Description:</span> ${taskItem.description}</p>
+            <p class="task-text"><span class="task-attribute">Description:</span> ${
+              taskItem.description
+            }</p>
             <div>
-              <p class="task-text"><span class="task-attribute">Due Date:</span> ${taskItem.dueDate}</p>
+              <p class="task-text"><span class="task-attribute">Due Date: </span>${formatDate(
+                taskItem.dueDate
+              )}</p>
             </div>          
-            <p class="task-text"><span class="task-attribute">Priority:</span> ${taskItem.priority}</p>
+            <p class="task-text"><span class="task-attribute">Priority:</span> ${
+              taskItem.priority
+            }</p>
             <p class="task-text"><span class="task-attribute">Completed:</span> <input type=checkbox><p>
           </div>
           <div>
